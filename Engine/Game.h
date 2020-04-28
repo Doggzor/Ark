@@ -25,6 +25,11 @@
 #include "Graphics.h"
 #include "Numbers.h"
 #include "FrameTimer.h"
+#include "RectF.h"
+#include "Ball.h"
+#include "Paddle.h"
+#include "Brick.h"
+#include "rng.h"
 
 class Game
 {
@@ -45,5 +50,15 @@ private:
 	/********************************/
 	/*  User Variables              */
     FrameTimer ft;
+    Ball ball;
+    Paddle pad;
+    RectF walls;
+    Vec2 bricksOffset = Vec2( 40.0f, 80.0f );
+    static constexpr float brickW = 40.0f;
+    static constexpr float brickH = 15.0f;
+    static constexpr int bricksAcross = 18;
+    static constexpr int bricksDown = 4;
+    static constexpr int nBricks = bricksAcross * bricksDown;
+    Brick bricks[nBricks];
 	/********************************/
 };

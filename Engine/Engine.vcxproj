@@ -136,6 +136,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
+    <ClInclude Include="Brick.h" />
     <ClInclude Include="ChiliException.h" />
     <ClInclude Include="ChiliWin.h" />
     <ClInclude Include="Colors.h" />
@@ -145,6 +147,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="Numbers.h" />
+    <ClInclude Include="Paddle.h" />
+    <ClInclude Include="RectF.h" />
     <ClInclude Include="rng.h" />
     <ClInclude Include="Keyboard.h" />
     <ClInclude Include="MainWindow.h" />
@@ -155,6 +159,8 @@
     <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="Brick.cpp" />
     <ClCompile Include="COMInitializer.cpp" />
     <ClCompile Include="DXErr.cpp" />
     <ClCompile Include="FrameTimer.cpp" />
@@ -165,6 +171,8 @@
     <ClCompile Include="MainWindow.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Numbers.cpp" />
+    <ClCompile Include="Paddle.cpp" />
+    <ClCompile Include="RectF.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
