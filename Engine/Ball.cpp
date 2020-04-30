@@ -12,7 +12,7 @@ void Ball::Update(float dt)
 	pos += vel * dt;
 }
 
-void Ball::clampscreen(const RectF& walls)
+bool Ball::WallBounce(const RectF& walls)
 {
 	if (GetRect().left <= walls.left)
 	{
@@ -34,6 +34,7 @@ void Ball::clampscreen(const RectF& walls)
 		pos.y -= GetRect().bottom - walls.bottom;
 		BounceY();
 	}
+	return GetRect().left <= walls.left || GetRect().right >= walls.right || GetRect().top <= walls.top || GetRect().bottom >= walls.bottom;
 }
 
 void Ball::BounceX()

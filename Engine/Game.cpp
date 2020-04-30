@@ -29,7 +29,7 @@ Game::Game( MainWindow& wnd )
     ball(Vec2(300.0f, 200.0f), Vec2(300.0f, 300.0f)),
     pad(Vec2(350.0f, 500.0f), 50.0f, 15.0f, 450.0f)
 {
-    Color bcolors[4] = { Colors::Cyan, Colors::Red, Colors::Blue, Colors::Orange };
+    Color bcolors[5] = { Colors::Cyan, Colors::Red, Colors::Blue, Colors::Orange, Colors::Green };
 
     for (int y = 0; y < bricksDown; y++)
     {
@@ -43,30 +43,66 @@ Game::Game( MainWindow& wnd )
 
 void Game::Go()
 {
-	gfx.BeginFrame();	
-	UpdateModel();
+	gfx.BeginFrame();
+    float ElapsedTime = ft.Mark();
+    while (ElapsedTime > 0.0f)
+    {
+        const float dt = std::min(0.0025f, ElapsedTime);
+        UpdateModel(dt);
+        ElapsedTime -= dt;
+    }
 	ComposeFrame();
 	gfx.EndFrame();
 }
 
-void Game::UpdateModel()
+void Game::UpdateModel(float dt)
 {
-    const float dt = ft.Mark();
     //Paddle
     pad.Update(wnd.kbd, walls, dt);
     pad.BallCollision(ball);
 
     //Bricks
-    for (auto& b : bricks) b.BallCollision(ball);
+    int curBrickIndex;
+    float curDistSq;
+    bool ColHappened = false;
+
+    for (int i = 0; i < nBricks; i++)
+    {
+        if (bricks[i].CheckBallCollision(ball))
+        {
+            const float newDistSq = (ball.GetRect().GetCenter() - bricks[i].GetCenter()).GetLengthSq();
+            if (ColHappened)
+            {
+                if (newDistSq < curDistSq)
+                {
+                    curDistSq = newDistSq;
+                    curBrickIndex = i;
+                }
+            }
+            else
+            {
+                ColHappened = true;
+                curDistSq = newDistSq;
+                curBrickIndex = i;
+            }
+        }
+    }
+    if (ColHappened)
+    {
+        bricks[curBrickIndex].ExecutekBallCollision(ball);
+        pad.ResetCoolDown();
+    }
+
+        
 
     //Ball
     ball.Update(dt);
-    ball.clampscreen(walls);
+    if (ball.WallBounce(walls)) pad.ResetCoolDown();
 }
 
 void Game::ComposeFrame()
 {
     pad.Draw(gfx);
-    for (const Brick& b : bricks) b.Draw(gfx);
+    for (const auto& b : bricks) b.Draw(gfx);
     ball.Draw(gfx);
 }

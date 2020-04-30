@@ -26,7 +26,7 @@ RectF RectF::FromCenter(const Vec2& center, float halfwidth, float halfheight)
 	return RectF(center.y - halfheight, center.y + halfheight, center.x - halfwidth, center.x + halfwidth);
 }
 
-bool RectF::isColliding(const RectF& rect)
+bool RectF::isColliding(const RectF& rect) const
 {
 	return top < rect.bottom && bottom > rect.top && left < rect.right && right > rect.left;
 }
@@ -34,4 +34,9 @@ bool RectF::isColliding(const RectF& rect)
 RectF RectF::GetShrunk(float offset) const
 {
 	return RectF(top + offset, bottom - offset, left + offset, right - offset);
+}
+
+Vec2 RectF::GetCenter() const
+{
+	return Vec2((left + right) / 2.0f, (top + bottom) / 2.0f);
 }

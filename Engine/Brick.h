@@ -7,7 +7,9 @@ class Brick
 public:
 	Brick() = default;
 	Brick(const RectF& rect, Color c);
-	void BallCollision(Ball& ball);
+	bool CheckBallCollision(const Ball& ball) const;
+	void ExecutekBallCollision(Ball& ball);
+	Vec2 GetCenter() const;
 	void Draw(Graphics& gfx) const;
 private:
 	RectF rect;

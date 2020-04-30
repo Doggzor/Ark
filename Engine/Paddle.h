@@ -9,9 +9,10 @@ class Paddle
 public:
 	Paddle(const Vec2& pos, float halfwidth, float halfheight, float speed);
 	void Update(const Keyboard& kbd, const RectF& walls, float dt);
-	void BallCollision(Ball& ball) const;
+	void BallCollision(Ball& ball);
 	RectF GetRect() const;
 	void Draw(Graphics& gfx) const;
+	void ResetCoolDown();
 private:
 	Vec2 pos;
 	float halfwidth;
@@ -20,6 +21,7 @@ private:
 	static constexpr float wingwidth = 15.0f;
 	Color wingC = Colors::Red;
 	float speed;
+	bool bCoolDown = false;
 
 };
 

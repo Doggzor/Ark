@@ -7,13 +7,26 @@ Brick::Brick(const RectF& rect, Color c)
 {
 }
 
-void Brick::BallCollision(Ball& ball)
+bool Brick::CheckBallCollision(const Ball& ball) const
 {
-	if (!destroyed && rect.RectF::isColliding(ball.GetRect()))
+	return (!destroyed && rect.isColliding(ball.GetRect()));
+}
+
+void Brick::ExecutekBallCollision(Ball& ball)
+{
+	if (CheckBallCollision(ball))
 	{
-		ball.BounceY();
+		const Vec2 ballcenter = ball.GetRect().GetCenter();
+		if (ballcenter.x > rect.left && ballcenter.x < rect.right
+			|| signbit(ball.GetVel().x) == signbit((ballcenter - GetCenter()).x)) ball.BounceY();
+		else ball.BounceX();
 		destroyed = true;
 	}
+}
+
+Vec2 Brick::GetCenter() const
+{
+	return Vec2(rect.GetCenter());
 }
 
 void Brick::Draw(Graphics& gfx) const

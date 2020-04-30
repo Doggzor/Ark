@@ -7,7 +7,7 @@ class Ball
 public:
 	Ball(const Vec2& in_pos, const Vec2& in_vel);
 	void Update(float dt);
-	void clampscreen(const RectF& walls);
+	bool WallBounce(const RectF& walls);
 	void BounceX();
 	void BounceY();
 	RectF GetRect() const;

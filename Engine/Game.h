@@ -40,7 +40,7 @@ public:
 	void Go();
 private:
 	void ComposeFrame();
-	void UpdateModel();
+	void UpdateModel(float dt);
 	/********************************/
 	/*  User Functions              */
 	/********************************/
@@ -53,11 +53,11 @@ private:
     Ball ball;
     Paddle pad;
     RectF walls;
-    Vec2 bricksOffset = Vec2( 40.0f, 80.0f );
+    const Vec2 bricksOffset = Vec2( 40.0f, 80.0f );
     static constexpr float brickW = 40.0f;
     static constexpr float brickH = 15.0f;
     static constexpr int bricksAcross = 18;
-    static constexpr int bricksDown = 4;
+    static constexpr int bricksDown = 5;
     static constexpr int nBricks = bricksAcross * bricksDown;
     Brick bricks[nBricks];
 	/********************************/

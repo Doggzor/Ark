@@ -17,9 +17,17 @@ void Paddle::Update(const Keyboard& kbd, const RectF& walls, float dt)
 	if (GetRect().right >= walls.right) pos.x -= GetRect().right - walls.right;
 }
 
-void Paddle::BallCollision(Ball& ball) const
+void Paddle::BallCollision(Ball& ball)
 {
-	if (GetRect().isColliding(ball.GetRect()) && ball.GetVel().y > 0.0f) ball.BounceY();
+	RectF rect = GetRect();
+	if (!bCoolDown && rect.isColliding(ball.GetRect()))
+	{
+		const Vec2 ballcenter = ball.GetRect().GetCenter();
+		if (ballcenter.x > rect.left && ballcenter.x < rect.right
+			|| signbit(ball.GetVel().x) == signbit((ballcenter - pos).x)) ball.BounceY();
+		else ball.BounceX();
+		bCoolDown = true;
+	}
 }
 
 RectF Paddle::GetRect() const
@@ -31,4 +39,9 @@ void Paddle::Draw(Graphics& gfx) const
 {
 	gfx.DrawRect(GetRect(), wingC);
 	gfx.DrawRect(RectF::FromCenter(pos, halfwidth - wingwidth, halfheight), padC);
+}
+
+void Paddle::ResetCoolDown()
+{
+	bCoolDown = false;
 }
