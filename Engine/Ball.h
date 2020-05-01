@@ -5,17 +5,20 @@
 class Ball
 {
 public:
-	Ball(const Vec2& in_pos, const Vec2& in_vel);
+	Ball(const Vec2& in_pos, const Vec2& in_vel, float in_speed);
 	void Update(float dt);
 	bool WallBounce(const RectF& walls);
 	void BounceX();
 	void BounceY();
+	void SetVX(float vx);
+	void SetPX(float px);
 	RectF GetRect() const;
 	const Vec2 GetVel() const;
 	void Draw(Graphics& gfx) const;
 private:
 	Vec2 pos;
 	Vec2 vel;
+	float speed;
 	static constexpr float radius = 7;
 };
 

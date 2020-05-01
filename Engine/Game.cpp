@@ -26,7 +26,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
     walls(0.0f, (float)gfx.ScreenHeight, 0.0f, (float)gfx.ScreenWidth),
-    ball(Vec2(300.0f, 200.0f), Vec2(300.0f, 300.0f)),
+    ball(Vec2(300.0f, 200.0f), Vec2(1.0f, 1.0f), 450.0f),
     pad(Vec2(350.0f, 500.0f), 50.0f, 15.0f, 450.0f)
 {
     Color bcolors[5] = { Colors::Cyan, Colors::Red, Colors::Blue, Colors::Orange, Colors::Green };

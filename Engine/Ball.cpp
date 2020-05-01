@@ -1,15 +1,17 @@
 #include "Ball.h"
 
-Ball::Ball(const Vec2& in_pos, const Vec2& in_vel)
+Ball::Ball(const Vec2& in_pos, const Vec2& in_vel, float in_speed)
 	:
 	pos(in_pos),
-	vel(in_vel)
+	vel(in_vel),
+	speed(in_speed)
 {
 }
 
 void Ball::Update(float dt)
 {
-	pos += vel * dt;
+	const Vec2 dir = ((pos + vel) - pos).GetNormalized();
+	pos += dir * speed * dt;
 }
 
 bool Ball::WallBounce(const RectF& walls)
@@ -45,6 +47,14 @@ void Ball::BounceX()
 void Ball::BounceY()
 {
 	vel.y = -vel.y;
+}
+void Ball::SetVX(float vx)
+{
+	vel.x = vx;
+}
+void Ball::SetPX(float px)
+{
+	pos.x = px;
 }
 RectF Ball::GetRect() const
 {

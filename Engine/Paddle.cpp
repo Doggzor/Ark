@@ -23,9 +23,18 @@ void Paddle::BallCollision(Ball& ball)
 	if (!bCoolDown && rect.isColliding(ball.GetRect()))
 	{
 		const Vec2 ballcenter = ball.GetRect().GetCenter();
-		if (ballcenter.x > rect.left && ballcenter.x < rect.right
-			|| signbit(ball.GetVel().x) == signbit((ballcenter - pos).x)) ball.BounceY();
-		else ball.BounceX();
+		const float dist = (ball.GetRect().GetCenter().x - pos.x) / halfwidth; //Distance from place of impact to the center of the paddle
+		if (ballcenter.x > rect.left && ballcenter.x < rect.right) //Ball bouncing off the top of the paddle
+		{
+			ball.SetVX(dist);
+			ball.BounceY();
+		}
+		else //Ball bouncing off the sides of the paddle
+		{
+			ball.SetVX(dist);
+			if (ballcenter.x < pos.x) ball.SetPX(rect.left); //Set ball x to be the same as left side of the paddle 
+			else if (ballcenter.x > pos.x) ball.SetPX(rect.right); //Set ball x to be the same as right side of the paddle
+		}
 		bCoolDown = true;
 	}
 }
