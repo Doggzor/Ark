@@ -53,10 +53,11 @@ private:
     Ball ball;
     Paddle pad;
     RectF walls;
+    static constexpr int wallThickness = 5;
     const Vec2 bricksOffset = Vec2( 40.0f, 80.0f );
-    static constexpr float brickW = 40.0f;
+    static constexpr float brickW = 30.0f;
     static constexpr float brickH = 15.0f;
-    static constexpr int bricksAcross = 18;
+    static constexpr int bricksAcross = 16;
     static constexpr int bricksDown = 5;
     static constexpr int nBricks = bricksAcross * bricksDown;
     Brick bricks[nBricks];

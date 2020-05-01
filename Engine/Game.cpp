@@ -25,8 +25,8 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-    walls(0.0f, (float)gfx.ScreenHeight, 0.0f, (float)gfx.ScreenWidth),
-    ball(Vec2(300.0f, 200.0f), Vec2(1.0f, 1.0f), 450.0f),
+    walls(Vec2(120.0f, 30.0f), Vec2(680.0f, (float)gfx.ScreenHeight)),
+    ball(Vec2(400.0f, 450.0f), Vec2(1.0f, 1.0f), 450.0f),
     pad(Vec2(350.0f, 500.0f), 50.0f, 15.0f, 450.0f)
 {
     Color bcolors[5] = { Colors::Cyan, Colors::Red, Colors::Blue, Colors::Orange, Colors::Green };
@@ -36,7 +36,7 @@ Game::Game( MainWindow& wnd )
         Color c = bcolors[y];
         for (int x = 0; x < bricksAcross; x++)
         {
-            bricks[y * bricksAcross + x] = Brick(RectF((bricksOffset + Vec2(x*brickW, y*brickH)), brickW, brickH), c);
+            bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x*brickW, y*brickH)), brickW, brickH), c);
         }
     }
 }
@@ -102,6 +102,11 @@ void Game::UpdateModel(float dt)
 
 void Game::ComposeFrame()
 {
+    const int wx = (int)(walls.left - wallThickness);
+    const int wy = (int)(walls.top - wallThickness);
+    const int wwidth = (int)(walls.right - walls.left + wallThickness * 2);
+    const int wheight = (int)(walls.bottom - walls.top + wallThickness);
+    gfx.DrawRectEmpty(wx, wy, wwidth, wheight, wallThickness, Colors::Magenta);
     pad.Draw(gfx);
     for (const auto& b : bricks) b.Draw(gfx);
     ball.Draw(gfx);
