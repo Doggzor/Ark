@@ -1,9 +1,11 @@
 #include "Brick.h"
 
-Brick::Brick(const RectF& rect, Color c)
+Brick::Brick(const RectF& rect, Color c, int durability, bool destructible)
 	:
 	rect(rect),
-	c(c)
+	c(c),
+	durability(durability),
+	destructible(destructible)
 {
 }
 
@@ -20,8 +22,9 @@ void Brick::ExecutekBallCollision(Ball& ball)
 		if (ballcenter.x > rect.left && ballcenter.x < rect.right
 			|| signbit(ball.GetVel().x) == signbit((ballcenter - GetCenter()).x)) ball.BounceY();
 		else ball.BounceX();
-		destroyed = true;
+		if(destructible) durability -= 1;
 	}
+	if (durability <= 0) destroyed = true;
 }
 
 Vec2 Brick::GetCenter() const

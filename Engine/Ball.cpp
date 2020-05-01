@@ -8,10 +8,20 @@ Ball::Ball(const Vec2& in_pos, const Vec2& in_vel, float in_speed)
 {
 }
 
-void Ball::Update(float dt)
+void Ball::Update(const RectF& paddle, float dt)
 {
-	const Vec2 dir = ((pos + vel) - pos).GetNormalized();
-	pos += dir * speed * dt;
+	if (bLaunched)
+	{
+		const Vec2 dir = ((pos + vel) - pos).GetNormalized();
+		pos += dir * speed * dt;
+	}
+	else
+		pos = Vec2((paddle.GetCenter().x + (paddle.right - paddle.left) / 5.0f), paddle.top - radius);
+}
+
+void Ball::launch()
+{
+	bLaunched = true;
 }
 
 bool Ball::WallBounce(const RectF& walls)

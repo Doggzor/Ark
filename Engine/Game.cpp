@@ -36,7 +36,7 @@ Game::Game( MainWindow& wnd )
         Color c = bcolors[y];
         for (int x = 0; x < bricksAcross; x++)
         {
-            bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x*brickW, y*brickH)), brickW, brickH), c);
+            bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x*brickW, y*brickH)), brickW, brickH), c, 2);
         }
     }
 }
@@ -96,7 +96,8 @@ void Game::UpdateModel(float dt)
         
 
     //Ball
-    ball.Update(dt);
+    if (wnd.kbd.KeyIsPressed(VK_SPACE)) ball.launch();
+    ball.Update(pad.GetRect(), dt);
     if (ball.WallBounce(walls)) pad.ResetCoolDown();
     if ((ball.GetRect().GetCenter().y > pad.GetRect().top && ball.GetRect().GetCenter().y < pad.GetRect().bottom) &&
         ((ball.GetRect().left <= (walls.left + wallThickness + 1.0f) && pad.GetRect().left <= (walls.left + wallThickness + 1.0f))

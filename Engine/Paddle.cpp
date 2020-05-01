@@ -24,9 +24,9 @@ void Paddle::BallCollision(Ball& ball)
 	{
 		const Vec2 ballcenter = ball.GetRect().GetCenter();
 		const float dist = (ball.GetRect().GetCenter().x - pos.x) / halfwidth; //Distance from place of impact to the center of the paddle
-		if (ballcenter.x > rect.left && ballcenter.x < rect.right) //Ball bouncing off the top of the paddle
+		if (ballcenter.x + ball.GetRadius() / 2.0f > rect.left && ballcenter.x - ball.GetRadius() / 2.0f < rect.right) //Ball bouncing off the top of the paddle
 		{
-			ball.SetVX(dist);
+			ball.SetVX(dist * 1.5f);
 			ball.BounceY();
 		}
 		else //Ball bouncing off the sides of the paddle

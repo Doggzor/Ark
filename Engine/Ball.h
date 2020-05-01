@@ -6,7 +6,8 @@ class Ball
 {
 public:
 	Ball(const Vec2& in_pos, const Vec2& in_vel, float in_speed);
-	void Update(float dt);
+	void Update(const RectF& paddle, float dt);
+	void launch();
 	bool WallBounce(const RectF& walls);
 	void BounceX();
 	void BounceY();
@@ -22,5 +23,6 @@ private:
 	Vec2 vel;
 	float speed;
 	static constexpr float radius = 7;
+	bool bLaunched = false;
 };
 
