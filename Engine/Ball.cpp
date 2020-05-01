@@ -56,6 +56,10 @@ void Ball::SetPX(float px)
 {
 	pos.x = px;
 }
+void Ball::SetPY(float py)
+{
+	pos.y = py;
+}
 RectF Ball::GetRect() const
 {
 	return RectF::FromCenter(pos, radius, radius);
@@ -64,6 +68,11 @@ RectF Ball::GetRect() const
 const Vec2 Ball::GetVel() const
 {
 	return vel;
+}
+
+float Ball::GetRadius() const
+{
+	return radius;
 }
 
 void Ball::Draw(Graphics& gfx) const

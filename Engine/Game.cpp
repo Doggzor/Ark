@@ -26,7 +26,7 @@ Game::Game( MainWindow& wnd )
 	wnd( wnd ),
 	gfx( wnd ),
     walls(Vec2(120.0f, 30.0f), Vec2(680.0f, (float)gfx.ScreenHeight)),
-    ball(Vec2(400.0f, 450.0f), Vec2(1.0f, 1.0f), 450.0f),
+    ball(Vec2(150.0f, 300.0f), Vec2(1.0f, 1.0f), 450.0f),
     pad(Vec2(350.0f, 500.0f), 50.0f, 15.0f, 450.0f)
 {
     Color bcolors[5] = { Colors::Cyan, Colors::Red, Colors::Blue, Colors::Orange, Colors::Green };
@@ -98,6 +98,12 @@ void Game::UpdateModel(float dt)
     //Ball
     ball.Update(dt);
     if (ball.WallBounce(walls)) pad.ResetCoolDown();
+    if ((ball.GetRect().GetCenter().y > pad.GetRect().top && ball.GetRect().GetCenter().y < pad.GetRect().bottom) &&
+        ((ball.GetRect().left <= (walls.left + wallThickness + 1.0f) && pad.GetRect().left <= (walls.left + wallThickness + 1.0f))
+        || (ball.GetRect().right >= (walls.right - wallThickness - 1.0f) && pad.GetRect().right >= (walls.right - wallThickness - 1.0f))))
+    {
+        ball.SetPY(pad.GetRect().bottom + ball.GetRadius() + 3.0f); //Prevent the ball from being squished to the wall by the paddle
+    }                                                               //(using a huge ass line of code)
 }
 
 void Game::ComposeFrame()

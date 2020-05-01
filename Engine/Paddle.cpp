@@ -32,8 +32,8 @@ void Paddle::BallCollision(Ball& ball)
 		else //Ball bouncing off the sides of the paddle
 		{
 			ball.SetVX(dist);
-			if (ballcenter.x < pos.x) ball.SetPX(rect.left); //Set ball x to be the same as left side of the paddle 
-			else if (ballcenter.x > pos.x) ball.SetPX(rect.right); //Set ball x to be the same as right side of the paddle
+			if (ballcenter.x < pos.x) ball.SetPX(rect.left - ball.GetRadius()); //Set ball x to be the same as left side of the paddle 
+			else if (ballcenter.x > pos.x) ball.SetPX(rect.right + ball.GetRadius()); //Set ball x to be the same as right side of the paddle
 		}
 		bCoolDown = true;
 	}

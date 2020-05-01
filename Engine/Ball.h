@@ -12,8 +12,10 @@ public:
 	void BounceY();
 	void SetVX(float vx);
 	void SetPX(float px);
+	void SetPY(float py);
 	RectF GetRect() const;
 	const Vec2 GetVel() const;
+	float GetRadius() const;
 	void Draw(Graphics& gfx) const;
 private:
 	Vec2 pos;
