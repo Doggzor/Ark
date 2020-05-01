@@ -36,7 +36,10 @@ Game::Game( MainWindow& wnd )
         Color c = bcolors[y];
         for (int x = 0; x < bricksAcross; x++)
         {
-            bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x*brickW, y*brickH)), brickW, brickH), c, 2);
+            if ((y * bricksAcross + x + 1) % 2 == 0)
+            {
+                bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x * brickW, y * brickH)), brickW, brickH), c, 1);
+            }
         }
     }
 }
