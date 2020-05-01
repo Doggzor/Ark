@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
     walls(Vec2(120.0f, 30.0f), Vec2(680.0f, (float)gfx.ScreenHeight)),
     ball(Vec2(150.0f, 300.0f), Vec2(1.0f, 1.0f), 450.0f),
-    pad(Vec2(350.0f, 500.0f), 50.0f, 15.0f, 450.0f)
+    pad(Vec2(350.0f, 550.0f), 50.0f, 10.0f, 450.0f)
 {
     Color bcolors[5] = { Colors::Cyan, Colors::Red, Colors::Blue, Colors::Orange, Colors::Green };
 
@@ -36,10 +36,12 @@ Game::Game( MainWindow& wnd )
         Color c = bcolors[y];
         for (int x = 0; x < bricksAcross; x++)
         {
-            if ((y * bricksAcross + x + 1) % 2 == 0)
+            if ((y * bricksAcross + x) % 5 == 2)
             {
-                bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x * brickW, y * brickH)), brickW, brickH), c, 1);
+                bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x * brickW, y * brickH)), brickW, brickH), c, 1, false);
             }
+            else
+                bricks[y * bricksAcross + x] = Brick(RectF((Vec2(walls.left, walls.top) + bricksOffset + Vec2(x * brickW, y * brickH)), brickW, brickH), c, 1);
         }
     }
 }
