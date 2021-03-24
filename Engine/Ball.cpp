@@ -12,8 +12,8 @@ void Ball::Update(const RectF& paddle, float dt)
 {
 	if (bLaunched)
 	{
-		const Vec2 dir = ((pos + vel) - pos).GetNormalized();
-		pos += dir * speed * dt;
+		//const Vec2 dir = vel.GetNormalized();
+		pos += vel.GetNormalized() * speed * dt;
 	}
 	else
 		pos = Vec2((paddle.GetCenter().x + (paddle.right - paddle.left) / 5.0f), paddle.top - radius);
@@ -43,8 +43,8 @@ bool Ball::WallBounce(const RectF& walls)
 	}
 	else if (GetRect().bottom >= walls.bottom)
 	{
-		pos.y -= GetRect().bottom - walls.bottom;
-		BounceY();
+		bLaunched = false;
+		bHitBottom = true;
 	}
 	return GetRect().left <= walls.left || GetRect().right >= walls.right || GetRect().top <= walls.top || GetRect().bottom >= walls.bottom;
 }

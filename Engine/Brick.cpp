@@ -40,3 +40,9 @@ void Brick::Draw(Graphics& gfx) const
 {
 	if(!destroyed) gfx.DrawRect(rect.GetShrunk(padding), c);
 }
+
+bool Brick::DestroyedIfPossible()
+{
+	if (destructible) return destroyed;
+	else return true;
+}

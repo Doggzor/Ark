@@ -30,6 +30,7 @@
 #include "Paddle.h"
 #include "Brick.h"
 #include "rng.h"
+#include "Images.h"
 
 class Game
 {
@@ -61,5 +62,6 @@ private:
     static constexpr int bricksDown = 5;
     static constexpr int nBricks = bricksAcross * bricksDown;
     Brick bricks[nBricks];
+    bool bGameWon = false;
 	/********************************/
 };

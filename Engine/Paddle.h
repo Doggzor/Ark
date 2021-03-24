@@ -12,7 +12,9 @@ public:
 	void BallCollision(Ball& ball);
 	RectF GetRect() const;
 	void Draw(Graphics& gfx) const;
+	void DrawLives(Graphics& gfx) const;
 	void ResetCoolDown();
+	bool bGameOver = false;
 private:
 	Vec2 pos;
 	float halfwidth;
@@ -21,6 +23,7 @@ private:
 	static constexpr float wingwidth = 15.0f;
 	Color wingC = Colors::Red;
 	float speed;
+	int nLives = 3;
 	bool bCoolDown = false;
 
 };

@@ -9,6 +9,7 @@ public:
 	void Update(const RectF& paddle, float dt);
 	void launch();
 	bool WallBounce(const RectF& walls);
+	bool bHitBottom = false;
 	void BounceX();
 	void BounceY();
 	void SetVX(float vx);

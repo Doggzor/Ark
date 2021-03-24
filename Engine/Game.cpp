@@ -27,7 +27,7 @@ Game::Game( MainWindow& wnd )
 	gfx( wnd ),
     walls(Vec2(120.0f, 30.0f), Vec2(680.0f, (float)gfx.ScreenHeight)),
     ball(Vec2(150.0f, 300.0f), Vec2(1.0f, 1.0f), 450.0f),
-    pad(Vec2(350.0f, 550.0f), 50.0f, 10.0f, 450.0f)
+    pad(Vec2(400.0f, 550.0f), 50.0f, 10.0f, 450.0f)
 {
     Color bcolors[5] = { Colors::Cyan, Colors::Red, Colors::Blue, Colors::Orange, Colors::Green };
 
@@ -62,64 +62,87 @@ void Game::Go()
 
 void Game::UpdateModel(float dt)
 {
-    //Paddle
-    pad.Update(wnd.kbd, walls, dt);
-    pad.BallCollision(ball);
-
-    //Bricks
-    int curBrickIndex;
-    float curDistSq;
-    bool ColHappened = false;
-
-    for (int i = 0; i < nBricks; i++)
+    if (!pad.bGameOver && !bGameWon)
     {
-        if (bricks[i].CheckBallCollision(ball))
+        //Paddle
+        pad.Update(wnd.kbd, walls, dt);
+        pad.BallCollision(ball);
+
+        //Bricks
+        int curBrickIndex;
+        float curDistSq;
+        bool ColHappened = false;
+
+        for (int i = 0; i < nBricks; i++)
         {
-            const float newDistSq = (ball.GetRect().GetCenter() - bricks[i].GetCenter()).GetLengthSq();
-            if (ColHappened)
+            if (bricks[i].CheckBallCollision(ball))
             {
-                if (newDistSq < curDistSq)
+                const float newDistSq = (ball.GetRect().GetCenter() - bricks[i].GetCenter()).GetLengthSq();
+                if (ColHappened)
                 {
+                    if (newDistSq < curDistSq)
+                    {
+                        curDistSq = newDistSq;
+                        curBrickIndex = i;
+                    }
+                }
+                else
+                {
+                    ColHappened = true;
                     curDistSq = newDistSq;
                     curBrickIndex = i;
                 }
             }
-            else
-            {
-                ColHappened = true;
-                curDistSq = newDistSq;
-                curBrickIndex = i;
-            }
+        }
+        if (ColHappened)
+        {
+            bricks[curBrickIndex].ExecutekBallCollision(ball);
+            pad.ResetCoolDown();
+        }
+
+
+
+        //Ball
+        if (wnd.kbd.KeyIsPressed(VK_SPACE)) ball.launch();
+        ball.Update(pad.GetRect(), dt);
+        if (ball.WallBounce(walls)) pad.ResetCoolDown();
+        if ((ball.GetRect().GetCenter().y > pad.GetRect().top && ball.GetRect().GetCenter().y < pad.GetRect().bottom) &&
+            ((ball.GetRect().left <= (walls.left + wallThickness + 1.0f) && pad.GetRect().left <= (walls.left + wallThickness + 1.0f))
+                || (ball.GetRect().right >= (walls.right - wallThickness - 1.0f) && pad.GetRect().right >= (walls.right - wallThickness - 1.0f))))
+        {
+            ball.SetPY(pad.GetRect().bottom + ball.GetRadius() + 3.0f); //Prevent the ball from being squished to the wall by the paddle
+        }                                                               //(using a huge ass line of code)
+    }
+
+    //Check if Game is won
+    bGameWon = true;
+    for (int i = 0; i < nBricks; i++)
+    {
+        if (!bricks[i].DestroyedIfPossible())
+        {
+            bGameWon = false;
+            break;
         }
     }
-    if (ColHappened)
-    {
-        bricks[curBrickIndex].ExecutekBallCollision(ball);
-        pad.ResetCoolDown();
-    }
 
-        
-
-    //Ball
-    if (wnd.kbd.KeyIsPressed(VK_SPACE)) ball.launch();
-    ball.Update(pad.GetRect(), dt);
-    if (ball.WallBounce(walls)) pad.ResetCoolDown();
-    if ((ball.GetRect().GetCenter().y > pad.GetRect().top && ball.GetRect().GetCenter().y < pad.GetRect().bottom) &&
-        ((ball.GetRect().left <= (walls.left + wallThickness + 1.0f) && pad.GetRect().left <= (walls.left + wallThickness + 1.0f))
-        || (ball.GetRect().right >= (walls.right - wallThickness - 1.0f) && pad.GetRect().right >= (walls.right - wallThickness - 1.0f))))
-    {
-        ball.SetPY(pad.GetRect().bottom + ball.GetRadius() + 3.0f); //Prevent the ball from being squished to the wall by the paddle
-    }                                                               //(using a huge ass line of code)
 }
 
 void Game::ComposeFrame()
 {
+    //Draw Border
     const int wx = (int)(walls.left - wallThickness);
     const int wy = (int)(walls.top - wallThickness);
     const int wwidth = (int)(walls.right - walls.left + wallThickness * 2);
     const int wheight = (int)(walls.bottom - walls.top + wallThickness);
     gfx.DrawRectEmpty(wx, wy, wwidth, wheight, wallThickness, Colors::Magenta);
-    pad.Draw(gfx);
-    for (const auto& b : bricks) b.Draw(gfx);
-    ball.Draw(gfx);
+    //Draw Lifes
+    pad.DrawLives(gfx);
+    if (!pad.bGameOver && !bGameWon)
+    {
+        pad.Draw(gfx);
+        for (const auto& b : bricks) b.Draw(gfx);
+        ball.Draw(gfx);
+    }
+    else if (pad.bGameOver) Images::GameLost(310, 280, gfx);
+    else Images::GameWon(320, 280, gfx);
 }
